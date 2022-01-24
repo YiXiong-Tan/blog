@@ -26,11 +26,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -40,6 +36,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // eloquent mutator
+    // pipes the variable through this function before performing the database action
+    // in this case would be password
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    // eloquent accessor
+//    public function getUsernameAttribute() {
+//        $this->attributes[]
+//    }
 
     public function posts()
     {
